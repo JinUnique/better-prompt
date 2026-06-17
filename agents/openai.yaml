@@ -1,0 +1,4 @@
+interface:
+  display_name: "Better Prompt"
+  short_description: "Polish and optimize prompts for agent execution."
+  default_prompt: "Use $better-prompt to polish this prompt: "
