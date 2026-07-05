@@ -9,8 +9,7 @@ It is not a general prose editor. Do not use it for ordinary wording polish, one
 - Converts complex requirements into agent-executable task prompts.
 - Defines goals, key results, context, constraints, acceptance criteria, verification, and stop conditions.
 - Defaults to a supervised execution loop: research, plan, execute, validate, summarize.
-- Uses a main-agent and subagent structure when the target environment supports subagents.
-- Provides a single-agent staged fallback when subagents are unavailable.
+- Uses a main-agent and subagent structure for complex task execution.
 - Removes repeated rules, vague quality language, unsupported capabilities, and process bloat.
 
 ## Install
@@ -71,7 +70,7 @@ better-prompt/
 
 - `SKILL.md`: trigger boundary, core workflow, default structure, and output contract.
 - `agents/openai.yaml`: Codex UI metadata.
-- `references/prompt-optimization.md`: reusable templates, rubric, orchestration guidance, fallback wording, and quality checks.
+- `references/prompt-optimization.md`: reusable templates, rubric, orchestration guidance, failure handling, and quality checks.
 
 ## Validation
 

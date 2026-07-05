@@ -1,6 +1,6 @@
 # Prompt Optimization Reference
 
-Use this reference when a complex task prompt needs deeper structure, reusable templates, orchestration guidance, fallback wording, or quality review.
+Use this reference when a complex task prompt needs deeper structure, reusable templates, orchestration guidance, failure-handling patterns, or quality review.
 
 ## Rubric
 
@@ -12,7 +12,7 @@ Score the optimized prompt against these dimensions:
 4. Verification: success can be checked by tests, commands, examples, screenshots, source review, rubric scoring, or observable acceptance criteria.
 5. Complex but not bloated: the prompt includes the structure required for reliable execution without irrelevant process, repeated rules, or decorative language.
 6. Coordination quality: main-agent and subagent responsibilities are separable, independently useful, and reviewable.
-7. Capability honesty: the prompt does not claim subagent, browsing, file editing, or tool abilities unless the target executor supports them.
+7. Capability honesty: the prompt does not claim browsing, file editing, or tool abilities unless the target executor supports them.
 8. Conflict control: requirements do not contradict each other, and tradeoffs are resolved into clear priorities.
 9. Output usability: the final response format is explicit enough to use directly.
 
@@ -24,7 +24,6 @@ Score the optimized prompt against these dimensions:
 - Replace "must be perfect" with testable pass/fail standards.
 - Replace open-ended research with source quality, minimum evidence, and how findings affect execution.
 - Replace generic "use subagents" with exact subtask boundaries, inputs, outputs, and review criteria.
-- Replace unsupported multi-agent claims with a single-agent staged fallback.
 - Replace endless iteration with stop conditions: threshold met, retry limit reached, no further gain, or clear blocker.
 - Replace scenario-specific hacks with reusable rules when the user is building a workflow, skill, template, or repeated procedure.
 
@@ -86,8 +85,6 @@ Do not shorten by deleting goals, constraints, verification, or failure handling
 
 ## Main-Subagent Supervision Template
 
-Use this when the target executor supports subagents or equivalent delegated workers.
-
 ```text
 # 执行方式
 主智能体只负责目标保持、上下文整合、任务拆解、调度、验收、风险控制和最终汇总。不要把具体实现、长篇调研或重复验证堆在主智能体中。
@@ -104,23 +101,6 @@ Use this when the target executor supports subagents or equivalent delegated wor
 3. 每个子智能体必须返回：输入、执行动作、发现、产物、验证结果、阻塞项。
 4. 主智能体审查所有子结果，解决冲突，决定局部重试或进入下一阶段。
 5. 不把内部调度日志写入最终交付，除非用户要求过程记录。
-```
-
-## Single-Agent Fallback Template
-
-Use this when the target executor does not support subagents, or when the prompt will be pasted into a normal chat model.
-
-```text
-# 单智能体 fallback
-当前环境不支持 subagent 时，不要声称派发子智能体。改为按阶段独立执行：
-
-1. 调研阶段：只收集事实、约束和未知项，输出简短调研结论。
-2. 计划阶段：把任务拆成可验收步骤，列出成功标准和验证方式。
-3. 执行阶段：按计划逐项完成，遇到冲突先回到目标和约束判断。
-4. 验收阶段：按成功标准逐项检查，失败则定位原因并局部修复。
-5. 总结阶段：只交付完成内容、验证结果、剩余风险和待确认项。
-
-每一阶段结束后自检：本阶段产物是否支持最终目标，是否引入无关范围，是否有未处理阻塞。
 ```
 
 ## Skill Or Reusable Capability Template
@@ -142,8 +122,7 @@ Use this when the target executor does not support subagents, or when the prompt
 
 # 主-子智能体执行策略
 - 主智能体：{coordination and acceptance role}
-- 子智能体：{only if supported and useful}
-- fallback：{single-agent staged behavior}
+- 子智能体：{bounded research, implementation, review, or validation roles}
 
 # 资源组织
 - SKILL.md: {core rules and navigation only}
@@ -175,7 +154,7 @@ Before delivering the optimized prompt, check:
 - Research requirements specify source quality or inspection targets.
 - Verification is concrete or the lack of automation is explained.
 - Stop conditions and retry limits are present for iterative work.
-- The prompt avoids fake subagent/tool capabilities.
+- The prompt uses subagents only for work that has clear input, output, and acceptance boundaries.
 - The prompt contains no short/closed-loop/complex strength labels.
 - The prompt has no duplicate rules, conflicting constraints, or generic polish language.
 - Any appendix or examples are separated from the main prompt when the prompt is long.
