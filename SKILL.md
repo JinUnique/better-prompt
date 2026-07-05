@@ -1,60 +1,60 @@
 ---
 name: better-prompt
-description: Polish, rewrite, and optimize prompts for stronger agent execution. Use when the user asks to "润色提示词", "优化提示词", "改写提示词", "润色：...", "prompt polish", "improve this prompt", or provides a draft prompt that should be made clearer, shorter, more executable, more verifiable, or better structured for an AI agent, coding agent, creative model, or workflow agent. Also use when converting vague requests into task prompts with goals, context, success criteria, verification, constraints, and final response format. Do not use for normal prose editing unless the text is intended to be a prompt.
+description: 'Optimize complex or high-quality task prompts for agent execution. Use when the user asks to optimize a complex task prompt, rewrite a requirement into an executable agent prompt, create a high-quality Codex or workflow-agent prompt, design prompts for research implementation review validation loops, or turn a skill/template/reviewer workflow into clear goals, constraints, success criteria, verification, and delivery format. Also use for Chinese requests such as 优化任务提示词, 改写成高质量执行提示词, 把这个需求整理成 agent 可执行提示词, or 设计多智能体执行提示词. Do not use for ordinary prose editing, one-sentence rewrites, simple translation, casual questions, lightweight prompt polish, or creative media prompts that should route to a domain-specific image video or music prompt skill.'
 ---
 
 # Better Prompt
 
 ## Core Rule
 
-Optimize prompts for execution quality, not decoration. Prefer the shortest prompt that preserves the user's intent, removes ambiguity, gives the agent enough context, and includes observable success criteria or verification when the task allows it.
+只优化复杂或高质量交付导向的任务提示词。目标不是让文字更好看，而是让下游 agent 更稳定地理解目标、拆解工作、执行验证并交付可验收结果。
+
+默认把任务提示词改写为监督式执行闭环：主智能体负责目标保持、需求澄清、任务拆解、子任务调度、验收标准、风险控制和最终汇总；子智能体在目标环境支持时负责独立调研、实现、审查或验证。若目标执行器不支持 subagent，保留同样的控制逻辑，但改写为单智能体分阶段执行，不声称可以派发子智能体。
+
+复杂不等于冗长。删除重复规则、空泛形容词、无法验收的要求、无关过程叙述和 generic "be professional" 语言；保留会影响执行质量的目标、背景、约束、输入、验收、验证和失败处理。
 
 ## Workflow
 
-1. Identify the target executor: coding agent, general assistant, image model, video model, music model, reviewer, or other workflow agent.
-2. Choose the smallest sufficient prompt strength: short task, closed-loop goal, or complex requirement. Infer this automatically; ask only when the draft is ambiguous and the choice would materially change the output.
-3. Extract the user's real objective, required context, hard constraints, output format, and any verification signal from the draft.
-4. Remove prompt bloat: repeated rules, vague praise words, hidden assumptions, excessive process narration, and generic "be professional" language.
-5. Rewrite into an execution-first structure:
-   - Task
-   - Context
-   - Requirements
-   - Success criteria
-   - Verification or review method
-   - Output format
-6. Keep optional blocks optional. Add research, independent review, evaluation loops, examples, or generalization rules only when they materially improve the task outcome. Add generalization rules only for reusable workflows, skills, templates, or repeated procedures.
-7. If the prompt is meant for an agent that can edit files or run tools, include concrete validation commands, sample checks, or acceptance criteria whenever possible.
-8. If the original prompt contains conflict, missing critical information, or impossible constraints, either resolve with a conservative assumption or ask only the minimum necessary clarification.
+1. 判断是否应使用本技能。仅当用户要优化复杂任务、高质量交付、agent 执行、工作流、reviewer、skill 或模板提示词时继续；普通文案润色、一句话改写、翻译、闲聊问题和轻量 prompt polish 不应承接。
+2. 识别目标执行器：Codex、coding agent、general workflow agent、reviewer、research agent、skill authoring agent，或不支持 subagent 的单智能体环境。
+3. 提炼真实目标、关键结果、上下文、输入材料、硬约束、偏好、交付物和验收信号。若原始需求隐藏错误前提或目标不清，先纠正或列出最小待确认项。
+4. 将需求拆成可执行闭环：调研 -> 计划 -> 执行 -> 验收 -> 总结。为每一阶段写清楚产物、通过标准和失败处理。
+5. 设计主-子智能体协作：主智能体只承担目标保持、监督管理、审查验收和整合；子智能体只承担边界清晰、可独立验证的调研、实现、审查或测试任务。
+6. 写入 fallback：若目标环境不支持 subagent，将主-子协作改成单智能体阶段化执行和阶段自检，不虚构并行能力。
+7. 加入验证方式、停止条件和阻塞报告。能运行工具时给出命令、样本检查或验收表；无法自动验证时要求说明原因、已验证事实和剩余风险。
+8. 审查输出提示词，确保没有分级残留、重复规则、冲突要求、无效流程、硬编码样例或与任务无关的附录。
 
-## Output Contract
-
-Return the optimized prompt first. Then add a short note only when useful:
-
-- `主要改动`: mention the highest-impact changes.
-- `使用建议`: mention how to fill placeholders, run validation, or choose optional blocks.
-- `待确认`: list critical missing information only if it blocks reliable execution.
-
-Do not over-explain obvious rewrites. Do not include a long critique unless the user asks for analysis.
-
-## Default Templates
-
-For most agent tasks, use this compact structure:
+## Default Structure
 
 ```text
 # 任务
 
 # 背景
 
-# 要求
+# 目标与关键结果
+
+# 执行方式
+## 主智能体职责
+## 子智能体职责
+## 单智能体 fallback
+
+# 流程
+## 调研
+## 计划
+## 执行
+## 验收
+## 总结
 
 # 成功标准
 
 # 验证方式
 
+# 失败处理与停止条件
+
 # 交付格式
 ```
 
-For skill or reusable-capability prompts, use this compact structure:
+For skill or reusable-capability prompts, use this structure:
 
 ```text
 # 目标能力
@@ -63,25 +63,40 @@ For skill or reusable-capability prompts, use this compact structure:
 
 # 不触发条件
 
-# 核心流程
+# 核心工作流
+
+# 主-子智能体执行策略
 
 # 资源组织
 
 # 验证方式
 
+# 验收样例
+
 # 交付格式
 ```
 
+## Output Contract
+
+先交付优化后的提示词。然后仅在有用时追加极短说明：
+
+- `主要改动`: 只列最高影响的结构性改动。
+- `使用建议`: 说明需要替换的占位符、验证命令或是否应启用 subagent。
+- `待确认`: 只列阻碍可靠执行的关键信息。
+
+不要输出长篇点评。不要把内部评审、评分表或推理过程混进可复制的优化提示词。
+
 ## Decision Rules
 
-- Prefer concise task prompts over exhaustive checklists.
-- Default to the lightest prompt strength that can execute the task reliably; do not ask the user to choose a strength unless it would materially change the output.
-- Turn absolute prohibitions into decision rules unless the behavior is genuinely never allowed.
-- Keep "run first, optimize second, generalize third" for one-off goals.
-- Keep "trigger correctly, stay concise, generalize safely, validate with representative samples" for skills.
-- Preserve domain-specific details that affect output quality; remove details that only reflect the source example's theme or wording.
-- If the user asks for an abstract or reusable prompt structure, use placeholders and option buckets instead of a polished one-off rewrite.
+- 默认面向复杂任务和高质量交付，不为简单润色降低强度。
+- 触发边界必须收窄；如果任务本身很轻，应直接建议不使用本技能。
+- 主-子智能体是默认执行结构，但必须受目标环境能力约束。
+- 子任务必须独立、有清晰输入输出、能被主智能体验收；不能为了显得复杂而拆分。
+- 定性要求必须落到可执行决策或可观察验收上。
+- 失败处理必须包含重试上限、阻塞条件和报告格式。
+- 字数是软约束。普通复杂任务目标 800-1800 个中文字；高质量工程、研究、skill 或模板任务目标 1500-3500 个中文字；超过 3500 字时拆成主提示词加附录、验收表或参考资料。
+- 如果用户要求抽象结构，使用占位符和选项槽；如果用户给出具体需求，交付可直接复制执行的完整提示词。
 
 ## Reference
 
-Read `references/prompt-optimization.md` only when the task needs prompt strength details, a rubric, a deeper diagnosis, a complex before/after rewrite, a reusable prompt template, or a metric-driven iteration loop.
+Read `references/prompt-optimization.md` when the task needs reusable templates, a deeper rubric, main-subagent orchestration details, single-agent fallback wording, failure-handling patterns, or a final quality checklist.

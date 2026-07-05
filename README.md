@@ -1,16 +1,17 @@
 # Better Prompt
 
-`better-prompt` is a Codex skill for polishing prompts into clearer, more executable task instructions.
+`better-prompt` is a Codex skill for turning complex or high-quality task requirements into executable prompts for agents and workflow systems.
 
-It is designed for prompts that target coding agents, general assistants, creative models, reviewers, or workflow agents. The skill keeps ordinary prompt rewrites concise, while loading deeper rubric and iteration guidance only for complex tasks.
+It is not a general prose editor. Do not use it for ordinary wording polish, one-sentence rewrites, simple translation, casual questions, or lightweight prompt polish. Use it when the request needs clear goals, constraints, agent coordination, success criteria, verification, failure handling, and a delivery format.
 
 ## What It Does
 
-- Clarifies the real task, context, constraints, success criteria, and output format.
-- Removes prompt bloat, repeated rules, vague wording, and hidden assumptions.
-- Chooses the smallest sufficient prompt strength: short task, closed-loop goal, or complex requirement.
-- Adds verification or review criteria when the downstream agent can check its work.
-- Provides reusable templates for agent prompts and skill-building prompts.
+- Converts complex requirements into agent-executable task prompts.
+- Defines goals, key results, context, constraints, acceptance criteria, verification, and stop conditions.
+- Defaults to a supervised execution loop: research, plan, execute, validate, summarize.
+- Uses a main-agent and subagent structure when the target environment supports subagents.
+- Provides a single-agent staged fallback when subagents are unavailable.
+- Removes repeated rules, vague quality language, unsupported capabilities, and process bloat.
 
 ## Install
 
@@ -22,22 +23,40 @@ git clone https://github.com/JinUnique/better-prompt.git "${CODEX_HOME:-$HOME/.c
 
 Then restart or refresh Codex so the skill can be discovered.
 
+## Development Source
+
+The WSL development source should live at:
+
+```bash
+/root/projects/better-prompt
+```
+
+Runtime installation copies may exist at:
+
+```bash
+/root/.hermes/skills/better-prompt
+C:\Users\陈锦涛\.codex\skills\better-prompt
+```
+
+Treat those runtime locations as sync targets, not the source of truth.
+
 ## Usage
 
-Ask Codex to use the skill when rewriting a prompt:
+Ask Codex to use the skill when rewriting a complex task prompt:
 
 ```text
-Use $better-prompt to polish this prompt:
-{your draft prompt}
+Use $better-prompt to optimize this complex task prompt:
+{your draft requirement}
 ```
 
 Common trigger phrases include:
 
-- `润色提示词`
-- `优化提示词`
-- `改写提示词`
-- `prompt polish`
-- `improve this prompt`
+- `优化任务提示词`
+- `改写成高质量执行提示词`
+- `把这个需求整理成 agent 可执行提示词`
+- `设计多智能体执行提示词`
+- `optimize this complex task prompt`
+- `rewrite this into an executable agent prompt`
 
 ## Structure
 
@@ -50,16 +69,16 @@ better-prompt/
     └── prompt-optimization.md
 ```
 
-- `SKILL.md`: core workflow, trigger behavior, and output contract.
-- `agents/openai.yaml`: UI metadata for Codex.
-- `references/prompt-optimization.md`: deeper rubric, templates, and optional metric-driven iteration guidance.
+- `SKILL.md`: trigger boundary, core workflow, default structure, and output contract.
+- `agents/openai.yaml`: Codex UI metadata.
+- `references/prompt-optimization.md`: reusable templates, rubric, orchestration guidance, fallback wording, and quality checks.
 
 ## Validation
 
 Validate the skill with the Codex skill creator's `quick_validate.py` script:
 
 ```bash
-python path/to/quick_validate.py path/to/better-prompt
+python /mnt/c/Users/陈锦涛/.codex/skills/.system/skill-creator/scripts/quick_validate.py /root/projects/better-prompt
 ```
 
 Expected result:
