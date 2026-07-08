@@ -35,29 +35,28 @@ Score the optimized prompt against these dimensions:
 
 Treat length as a soft constraint. Execution clarity matters more than exact character count.
 
-- Codex `/goal` simple target: 1-3 sentences / 50-150 Chinese characters.
-- Codex `/goal` ordinary engineering target: 8-20 lines / 300-800 Chinese characters.
-- Codex `/goal` complex long-running target: at most about one screen / 800-1500 Chinese characters. Above that, split bulky context into a `PLAN.md`, `SPEC.md`, issue, acceptance table, examples, or reference file and point the `/goal` at it.
-- Ordinary complex task prompt: 800-1800 Chinese characters.
+- Simple task prompt: 1-3 sentences / 50-150 Chinese characters.
+- Ordinary engineering or execution task prompt: 8-20 lines / 300-800 Chinese characters.
+- Complex long-running or multi-agent task prompt: at most about one screen / 800-1500 Chinese characters.
 - High-quality engineering, research, skill, template, or review prompt: 1500-3500 Chinese characters.
 - Above 3500 Chinese characters: split into a main prompt plus appendix, acceptance table, examples, or reference material so key instructions are not buried.
 
 Do not shorten by deleting goals, constraints, verification, or failure handling. Shorten by removing repetition, decorative language, redundant process narration, and requirements that belong in reference material.
 
-## Codex `/goal` Prompt Pattern
+## Task Completion Contract Pattern
 
-Use `/goal` when the task has a durable objective, an evidence-based finish line, and an uncertain multi-step path. Do not use it for one-line edits, simple explanations, taste-heavy choices, or vague “make it better” work.
+Use this pattern when the task has a durable objective, an evidence-based finish line, and an uncertain multi-step path. Do not use it for one-line edits, simple explanations, taste-heavy choices, or vague “make it better” work.
 
 The minimum contract is:
 
 ```text
-/goal <one durable objective>. Done means <observable outcome>, verified by <tests/commands/artifact/evidence>, while preserving <constraints>. Use only <allowed scope/resources>. Between iterations, <record evidence and choose the next best experiment>. If blocked, verification cannot run, scope expansion is required, or no valid path remains, stop and report attempted paths, evidence, blocker, and exact input needed.
+<one durable objective>. Done means <observable outcome>, verified by <tests/commands/artifact/evidence>, while preserving <constraints>. Use only <allowed scope/resources>. Between iterations, <record evidence and choose the next best experiment>. If blocked, verification cannot run, scope expansion is required, or no valid path remains, stop and report attempted paths, evidence, blocker, and exact input needed.
 ```
 
 For complex work, prefer short labeled lines:
 
 ```text
-/goal <single objective>
+Task: <single objective>
 Context: <essential context or file/spec links only>
 Scope: <allowed files/tools/resources>; ask before <risky actions>; never <forbidden actions>
 Verification: <primary command/check/artifact>; evidence required <logs/report/diff/screenshot>
@@ -69,22 +68,22 @@ Done when:
 Final report: DONE/PARTIAL/BLOCKED plus changed files, checks run, evidence map, risks, next step
 ```
 
-Strong `/goal` prompts answer four questions:
+Strong task prompts answer four questions:
 
 1. What single outcome should become true?
 2. What evidence proves it is true?
 3. What boundaries and constraints must stay intact while the agent works?
 4. When should the agent stop instead of continuing to spend tokens or take risk?
 
-Weak `/goal` prompts usually fail because they are vague, broad, or self-judging:
+Weak task prompts usually fail because they are vague, broad, or self-judging:
 
-- Bad: `/goal improve auth`
-- Better: `/goal raise src/auth coverage from 38% to 75%, only edit src/auth and tests, stop when npm test passes and the coverage threshold is met`
+- Bad: `improve auth`
+- Better: `Raise src/auth coverage from 38% to 75%, only edit src/auth and tests, stop when npm test passes and the coverage threshold is met.`
 
 If the source context is large, write or reference a plan first:
 
 ```text
-/goal Execute Phase 1 from docs/migration-plan.md for the auth module. Done when npm test and auth e2e pass, public APIs are unchanged, and the final report maps each Phase 1 acceptance item to command output or diff evidence. Stop if the plan conflicts with current code or requires dependency/production changes.
+Execute Phase 1 from docs/migration-plan.md for the auth module. Done when npm test and auth e2e pass, public APIs are unchanged, and the final report maps each Phase 1 acceptance item to command output or diff evidence. Stop if the plan conflicts with current code or requires dependency/production changes.
 ```
 
 ## Complex Task Prompt Template
@@ -205,7 +204,7 @@ Before delivering the optimized prompt, check:
 - Verification is concrete or the lack of automation is explained.
 - Stop conditions and retry limits are present for iterative work.
 - Autonomous-loop prompts define evidence-based completion and do not rely on the agent declaring success without checks.
-- `/goal` prompts keep bulky background out of the main goal text and point to files/specs when needed.
+- Long-running task prompts keep bulky background out of the main prompt text and point to files/specs when needed.
 - The prompt uses subagents only for work that has clear input, output, and acceptance boundaries.
 - The prompt contains no short/closed-loop/complex strength labels.
 - The prompt has no duplicate rules, conflicting constraints, or generic polish language.
