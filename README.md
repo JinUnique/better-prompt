@@ -55,7 +55,6 @@ Common trigger phrases include:
 - `把这个需求整理成 agent 可执行提示词`
 - `设计 /goal 提示词`
 - `把这个需求整理成 Codex /goal`
-- `全局指令提示词`
 - `设计多智能体执行提示词`
 - `optimize this complex task prompt`
 - `rewrite this into an executable agent prompt`

@@ -8,7 +8,7 @@ Synthesize official and high-confidence social guidance into these operating rul
 
 1. OpenAI Codex: a goal is both the starting prompt and completion criteria. Include a specific outcome, measurable done state, verification surface, and task context. Keep durable rules in AGENTS.md and keep them practical.
 2. Anthropic: be clear and direct, specify output format and constraints, use ordered steps when order matters, give explicit tool/action intent, and avoid relying on vague "above and beyond" language.
-3. Hermes Agent: separate identity from operations. SOUL is for voice, personality, uncertainty posture, and style; AGENTS.md is for project commands, paths, workflow, and repo-specific rules.
+3. Hermes Agent: keep long-lived agent governance separate from task goals. A `/goal` may reference durable instructions, but should not become a persona or project-instruction document.
 4. Multi-platform social signal: short hard constraints outperform vague advice. `/goal` should be a loop contract with verification, not a motivational brief. Global rules should be DRY, narrow, and easy for an agent to follow literally.
 
 ## Goal Prompt Style
@@ -21,7 +21,7 @@ For `/goal`, prefer:
 - preference ordering over value statements
 - hard stop conditions over "try your best"
 - source links or file references over copied background
-- short behavior vectors over explanatory paragraphs
+- concise operational clauses over explanatory paragraphs
 
 ## Rubric
 
@@ -59,7 +59,6 @@ Treat length as a soft constraint. Execution clarity matters more than exact cha
 - Codex `/goal` simple target: 1-3 sentences / 50-150 Chinese characters.
 - Codex `/goal` ordinary engineering target: 8-20 lines / 300-800 Chinese characters.
 - Codex `/goal` complex long-running target: at most about one screen. Above 800-1500 Chinese characters, split bulky context into `PLAN.md`, `SPEC.md`, issue, acceptance table, examples, or reference file and point the `/goal` at it.
-- Global-instruction, SOUL, or AGENTS.md prompt targets: 6-16 short lines, one behavior vector per line.
 - Above 1500 Chinese characters: split into a goal plus appendix/reference material so key instructions are not buried.
 
 Do not shorten by deleting goals, constraints, verification, or failure handling. Shorten by removing repetition, decorative language, redundant process narration, and requirements that belong in reference material.
