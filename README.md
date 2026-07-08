@@ -7,10 +7,11 @@ It is not a general prose editor. Do not use it for ordinary wording polish, one
 ## What It Does
 
 - Converts complex requirements into agent-executable task prompts.
+- Designs compact Codex `/goal` contracts for long-running loops: outcome, verification surface, constraints, boundaries, iteration policy, and blocked stop condition.
 - Defines goals, key results, context, constraints, acceptance criteria, verification, and stop conditions.
 - Defaults to a supervised execution loop: research, plan, execute, validate, summarize.
 - Uses a main-agent and subagent structure for complex task execution.
-- Removes repeated rules, vague quality language, unsupported capabilities, and process bloat.
+- Removes repeated rules, vague quality language, unsupported capabilities, oversized background dumps, and process bloat.
 
 ## Install
 
@@ -54,6 +55,8 @@ Common trigger phrases include:
 - `改写成高质量执行提示词`
 - `把这个需求整理成 agent 可执行提示词`
 - `设计多智能体执行提示词`
+- `设计 /goal 提示词`
+- `把这个需求整理成 Codex /goal`
 - `optimize this complex task prompt`
 - `rewrite this into an executable agent prompt`
 

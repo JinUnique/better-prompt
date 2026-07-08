@@ -1,4 +1,4 @@
 interface:
   display_name: "Better Prompt"
-  short_description: "Optimize complex task prompts for high-quality agent execution."
-  default_prompt: "Use $better-prompt to optimize this complex task prompt: "
+  short_description: "Optimize complex prompts and Codex /goal contracts for agent execution."
+  default_prompt: "Use $better-prompt to optimize this complex task or /goal prompt: "
