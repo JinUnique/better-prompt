@@ -1,13 +1,13 @@
 # Better Prompt
 
-`better-prompt` is a skill for turning complex or high-quality task requirements into executable prompts for agents and workflow systems.
+`better-prompt` is a Codex skill for turning complex or high-stakes requirements into high-delivery `/goal` task prompts.
 
-It is not a general prose editor. Do not use it for ordinary wording polish, one-sentence rewrites, simple translation, casual questions, or lightweight prompt polish. Use it when the request needs clear goals, constraints, agent coordination, success criteria, verification, failure handling, and a delivery format.
+It is not a general prose editor. Do not use it for ordinary wording polish, one-sentence rewrites, simple translation, casual questions, or lightweight prompt polish. Use it when the request needs a durable objective, constraints, agent coordination, success criteria, verification, stop conditions, and a delivery format.
 
 ## What It Does
 
-- Converts complex requirements into agent-executable task prompts.
-- Designs compact task completion contracts for long-running loops: outcome, verification surface, constraints, boundaries, iteration policy, and blocked stop condition.
+- Converts complex requirements into Codex `/goal` contracts.
+- Designs compact long-running task goals: outcome, verification surface, constraints, boundaries, iteration policy, and blocked stop condition.
 - Defines goals, key results, context, constraints, acceptance criteria, verification, and stop conditions.
 - Defaults to a supervised execution loop: research, plan, execute, validate, summarize.
 - Uses a main-agent and subagent structure for complex task execution.
@@ -41,7 +41,7 @@ Treat those runtime locations as sync targets, not the source of truth.
 
 ## Usage
 
-Ask the target agent to use the skill when rewriting a complex task prompt:
+Ask Codex to use the skill when drafting or rewriting a `/goal` prompt:
 
 ```text
 Use $better-prompt to optimize this complex task prompt:
@@ -53,6 +53,9 @@ Common trigger phrases include:
 - `优化任务提示词`
 - `改写成高质量执行提示词`
 - `把这个需求整理成 agent 可执行提示词`
+- `设计 /goal 提示词`
+- `把这个需求整理成 Codex /goal`
+- `全局指令提示词`
 - `设计多智能体执行提示词`
 - `optimize this complex task prompt`
 - `rewrite this into an executable agent prompt`

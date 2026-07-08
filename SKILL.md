@@ -1,50 +1,52 @@
 ---
 name: better-prompt
-description: 'Optimize complex or high-quality task prompts for agent execution. Use when the user asks to optimize a complex task prompt, rewrite a requirement into an executable agent prompt, create a high-quality agent task prompt or workflow-agent prompt, design prompts for research implementation review validation loops, or turn a skill/template/reviewer workflow into clear goals, constraints, success criteria, verification, and delivery format. Also use for Chinese requests such as 优化任务提示词, 改写成高质量执行提示词, 把这个需求整理成 agent 可执行提示词, or 设计多智能体执行提示词. Do not use for ordinary prose editing, one-sentence rewrites, simple translation, casual questions, lightweight prompt polish, or creative media prompts that should route to a domain-specific image video or music prompt skill.'
+description: 'Use when the user asks to write, optimize, shorten, critique, or turn requirements into a high-delivery Codex /goal task prompt, agent goal, SOUL/Global Instructions/AGENTS.md prompt, or Chinese requests such as 优化任务提示词, 改写成 /goal, 设计 /goal 提示词, 全局指令提示词, agent 可执行提示词. Do not use for ordinary prose editing, simple translation, casual questions, or creative media prompts.'
 ---
 
 # Better Prompt
 
 ## Core Rule
 
-只优化复杂或高质量交付导向的任务提示词。目标不是让文字更好看，而是让下游 agent 更稳定地理解目标、拆解工作、执行验证并交付可验收结果。
+唯一目标：把复杂或高要求需求改写成高交付的 Codex `/goal` 任务提示词。目标不是让文字更好看，而是让下游 agent 在长跑任务中稳定识别目标、边界、验证、停止条件和交付格式。
 
-默认把任务提示词改写为主-子智能体监督式执行闭环：主智能体负责目标保持、需求澄清、任务拆解、子任务调度、验收标准、风险控制和最终汇总；子智能体负责独立调研、实现、审查或验证。
+默认输出可直接粘贴的 `/goal` 正文。除非用户明确要求普通 prompt、skill、模板或评审提示词，否则不要退回泛化任务提示词。
 
-当任务会交给 agent 持续执行、多轮验证或长时间推进时，提示词应写成紧凑的完成合约，而不是更大的 prompt：明确 outcome、verification surface、constraints、boundaries、iteration policy、blocked stop condition。把长背景、资料、样例和清单移到文件、issue、spec 或 reference 中，由 agent 按需读取；任务提示词正文只保留足以执行和验收的高信号信息。
+行为规范来自 OpenAI Codex 官方 goal/prompt/AGENTS 指南、Anthropic 官方 prompt/agent 指南、Hermes Agent 官方 SOUL/AGENTS 分层，以及 X、Reddit、Hacker News 等多平台高置信评价的共识。把这些来源压缩为决策姿态：少解释，多约束；少愿景，多偏好排序；少叙事，多可验证停止条件。
 
-复杂不等于冗长。删除重复规则、空泛形容词、无法验收的要求、无关过程叙述和 generic "be professional" 语言；保留会影响执行质量的目标、背景、约束、输入、验收、验证和失败处理。
+复杂不等于冗长。删除重复规则、空泛形容词、过程叙事、内部评分和 generic "be professional" 语言；保留会改变 agent 行为的目标、上下文、约束、偏好排序、验证、风险护栏和阻塞报告。
 
 ## Workflow
 
-1. 判断是否应使用本技能。仅当用户要优化复杂任务、高质量交付、agent 执行、工作流、reviewer、skill 或模板提示词时继续；普通文案润色、一句话改写、翻译、闲聊问题和轻量 prompt polish 不应承接。
-2. 识别目标执行器：coding agent、general workflow agent、reviewer、research agent、skill authoring agent 或其他 agent/task runner。
-3. 提炼真实目标、关键结果、上下文、输入材料、硬约束、偏好、交付物和验收信号。若原始需求隐藏错误前提或目标不清，先纠正或列出最小待确认项。
-4. 将需求拆成可执行闭环：调研 -> 计划 -> 执行 -> 验收 -> 总结。为每一阶段写清楚产物、通过标准和失败处理。若是长跑或自主循环任务，不要写成长篇阶段说明；压缩为“目标 + 证据面 + 边界 + 迭代策略 + 阻塞停止”的合约。
-5. 设计主-子智能体协作：主智能体只承担目标保持、监督管理、审查验收和整合；子智能体只承担边界清晰、可独立验证的调研、实现、审查或测试任务。
-6. 加入验证方式、停止条件和阻塞报告。能运行工具时给出命令、样本检查或验收表；无法自动验证时要求说明原因、已验证事实和剩余风险。
-7. 审查输出提示词，确保没有分级残留、重复规则、冲突要求、无效流程、硬编码样例或与任务无关的附录。
+1. 判断是否是 `/goal`、长跑 agent 目标、全局指令纲领、SOUL、Global Instructions 或 AGENTS.md 提示词；是则使用本技能，不是则建议不用。
+2. 提炼一个 durable objective：只保留真正要变成事实的结果，不把背景、愿景、资料堆进目标。
+3. 写出完成合约：outcome、context、scope、verification、iteration、stop if、done when、final report。
+4. 写出偏好排序：优先什么、拒绝什么、默认怎么做、除非什么才改变路线。
+5. 写出风险护栏：资金损失、隐私泄露、不可逆操作、生产变更、范围扩张必须停下并请求确认。
+6. 若任务适合多智能体，只描述主智能体监督验收与子智能体边界；不要展开调度日志。
+7. 审查每一行：一行一个行为向量，必须有判别力；删掉不能改变 agent 决策的句子。
 
-## Long-running Task Contract
+## Codex `/goal` Contract
 
-Use this compact structure when optimizing a task prompt for an autonomous or long-running agent:
+Use this compact structure when the output will be pasted after `/goal`:
 
 ```text
-<one durable objective>. Done means <observable outcome>, verified by <tests/commands/artifact/evidence>, while preserving <constraints>. Use only <allowed scope/resources>. Between iterations, <record evidence and choose the next best experiment>. If blocked, verification cannot run, scope expansion is required, or no valid path remains, stop and report attempted paths, evidence, blocker, and exact input needed.
+/goal <one durable objective>. Done means <observable outcome>, verified by <tests/commands/artifact/evidence>, while preserving <constraints>. Use only <allowed scope/resources>. Between iterations, <record evidence and choose the next best experiment>. If blocked, verification cannot run, scope expansion is required, or no valid path remains, stop and report attempted paths, evidence, blocker, and exact input needed.
 ```
 
-For complex long-running work, keep the same contract but expand into short labeled lines instead of a long paragraph:
+For complex `/goal` work, keep the same contract but expand into short labeled lines:
 
 ```text
-Task: <single objective>
+/goal <single objective>
 Context: <only essential context or file/spec links>
-Scope: <allowed files/tools/resources>; ask before <risky actions>; never <forbidden actions>
+Scope: <allowed files/tools/resources>; ask before <risky actions>; refuse <forbidden actions>
 Verification: <primary command/check/artifact>; evidence required <logs/report/diff/screenshot>
 Iteration: <smallest safe slice, rerun narrow check, record changed evidence, pick next different strategy>
 Stop if: <blocked data/tool/permission, no-progress, budget/time cap, human decision required>
 Done when: <numbered observable acceptance criteria>
 Final report: DONE/PARTIAL/BLOCKED plus changed files, checks run, evidence map, risks, next step
 ```
+
+For global-instruction or SOUL/AGENTS outputs, compress into high-information short lines: each line must contain a behavior vector and a decision operator such as `优先`, `拒绝`, `默认`, `先`, `再`, `除非`, or `停止`.
 
 ## Default Structure
 
@@ -99,24 +101,25 @@ For skill or reusable-capability prompts, use this structure:
 
 ## Output Contract
 
-先交付优化后的提示词。然后仅在有用时追加极短说明：
+先交付优化后的 `/goal` 提示词。然后仅在有用时追加极短说明：
 
-- `主要改动`: 只列最高影响的结构性改动。
-- `使用建议`: 说明需要替换的占位符、验证命令或如何启用 subagent 协作。
+- `主要改动`: 只列 1-3 个最高影响的结构性改动。
+- `使用建议`: 只说明占位符、验证命令或是否需要先 `/plan`。
 - `待确认`: 只列阻碍可靠执行的关键信息。
 
-不要输出长篇点评。不要把内部评审、评分表或推理过程混进可复制的优化提示词。
+不要输出长篇点评。不要把内部评审、评分表、来源综述或推理过程混进可复制的 `/goal` 提示词。
 
 ## Decision Rules
 
-- 默认面向复杂任务和高质量交付，不为简单润色降低强度。
+- `/goal` 是最高优先级分支；所有模板和解释都服务于高交付 goal，不服务于“更完整的文章”。
 - 触发边界必须收窄；如果任务本身很轻，应直接建议不使用本技能。
-- 默认使用主-子智能体执行结构，由主智能体保持目标并监督验收。
+- 默认使用主-子智能体执行结构，由主智能体保持目标并监督验收；但只在目标里写必要边界。
 - 子任务必须独立、有清晰输入输出、能被主智能体验收；不能为了显得复杂而拆分。
 - 定性要求必须落到可执行决策或可观察验收上。
 - 失败处理必须包含重试上限、阻塞条件和报告格式。
-- 字数是软约束。简单任务提示词目标 1-3 句 / 50-150 中文字；中等工程或执行任务目标 8-20 行 / 300-800 中文字；复杂长跑或多智能体任务目标约 1 屏 / 800-1500 中文字；高质量研究、skill、模板或 review 任务目标 1500-3500 中文字。超过 3500 字时拆成主提示词加附录、验收表、样例或参考资料。
-- 如果用户要求抽象结构，使用占位符和选项槽；如果用户给出具体需求，交付可直接复制执行的完整提示词。
+- 字数默认 300-800 中文字；简单 goal 50-150 字；复杂长跑最多约 1 屏。超过 800 字时优先拆成 `PLAN.md`、`SPEC.md`、issue、验收表或参考材料，再让 `/goal` 引用它们。
+- 用户要求全局指令、SOUL 或 AGENTS.md 时，输出短约束清单：少解释，多约束；少愿景，多偏好排序；少叙事，多决策姿态。
+- 如果用户给出具体需求，交付可直接复制执行的完整 `/goal`；如果信息不足，输出最小待确认项而不是填充假设。
 
 ## Reference
 
